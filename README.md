@@ -1,5 +1,5 @@
 # bin_parser
-scripts to parse binaries
+scripts to parse binary files
 
 ---
 
