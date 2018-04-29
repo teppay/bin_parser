@@ -532,8 +532,8 @@ class Reader:
         self.__pld = EVDEVPayload()
         self.__f.readinto(self.__fh)
     
-    def show_events(self):
-        for _ in range(500):
+    def show_events(self, n):
+        for _ in range(n):
             if not self.__f.readable():
                 break
 
@@ -544,6 +544,32 @@ class Reader:
             
         self.__f.seek(0)
     
+    def show_key_events(self,n):
+        idx = 0
+        while idx < n:
+            if not self.__f.readable():
+                break
+            
+            self.__f.readinto(self.__ph)
+            self.__f.readinto(self.__pld)
+            if self.__pld.ev_type == 1 and self.__pld.ev_value == 1:
+                event = self.EV[self.__pld.ev_type](self.__pld)
+                print(event)
+        self.__f.seek(0)
+
+    def get_key_inputs(self, n):
+        idx = 0
+        while idx < n:
+            if not self.__f.readable():
+                break
+            
+            self.__f.readinto(self.__ph)
+            self.__f.readinto(self.__pld)
+            if self.__pld.ev_type == 1 and self.__pld.ev_value == 1:
+                event = self.EV[self.__pld.ev_type](self.__pld)
+                print(event.code[event.ev_code][1])
+
+        self.__f.seek(0)
 
 
 def show_evdev_payload(evdev_payload):
@@ -559,7 +585,7 @@ def debug():
 
     buffer = open(file_name, 'rb')
     r = Reader(buffer)
-    r.show_events()
+    r.get_key_inputs(100)
 
 if __name__ == '__main__':
     # Check debug flag
