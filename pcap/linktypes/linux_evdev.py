@@ -479,10 +479,10 @@ class EV_KEY(EVent):
             522: ['KEY_NUMERIC_STAR', '<NUMERIC_STAR>'],
             523: ['KEY_NUMERIC_POUND', '<NUMERIC_POUND>'],
             767: ['KEY_MAX', '<MAX>']}
-    value = ['push', 'release']
+    value = ['Release', 'Push', 'Auto Repeat']
     
     def __str__(self):
-        return f'EV_SYN:\t{self.code[self.ev_code][0]}\t{self.ev_value}'
+        return f'EV_KEY:\t{self.code[self.ev_code][0]}\t{self.value[self.ev_value]}'
 
 class EV_REL(EVent):
     # TODO
@@ -552,7 +552,7 @@ class Reader:
             
             self.__f.readinto(self.__ph)
             self.__f.readinto(self.__pld)
-            if self.__pld.ev_type == 1 and self.__pld.ev_value == 1:
+            if self.__pld.ev_type == 1:
                 event = self.EV[self.__pld.ev_type](self.__pld)
                 print(event)
         self.__f.seek(0)
@@ -585,7 +585,7 @@ def debug():
 
     buffer = open(file_name, 'rb')
     r = Reader(buffer)
-    r.get_key_inputs(100)
+    r.show_key_events(100)
 
 if __name__ == '__main__':
     # Check debug flag
