@@ -29,7 +29,7 @@ class EVent:
         self.ev_value = pld.ev_value
 
     def __str__(self):
-        return f'(ev_code:{self.ev_type}) not supported'
+        return f'(ev_type:{self.ev_type}) not supported'
 
 class EV_SYN(EVent):
     code = ['SYN_REPORT',
